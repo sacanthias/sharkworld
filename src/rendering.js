@@ -1,9 +1,29 @@
+const fs = require('fs');
+const matter = require('gray-matter');
+const path = require('path');
+const ejs = require('ejs');
+
+let data;
+const folderPath = './base';
+const files = fs.readdirSync(folderPath).map(fileName => `${folderPath}/${fileName}`);
+
+console.log(files);
+
 // pseudocode
-// take post front matter (YAML > JSON)
-// or deadass just take the YAML and use a node plugin to read it directly
-// post is now represented as a JSON object 
-// take ejs formatted template
-// iterate through the post object and fill in the blanks for the template
-// save file as slug in static folder
-// serve from static folder
+files.forEach(post => {
+    // get actual file from the path
+    if(path.extname(post) == '.md'){
+        try {
+            // using gray-matter to read & parse contents of the md file 
+            data = matter.read(post);
+            console.log(data);
+            
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    else{
+        console.log(`The file ${post} is not a Markdown file.`)
+    }
+});
 // profit
